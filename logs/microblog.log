@@ -1,0 +1,115 @@
+2020-06-06 14:34:49,103 INFO: Microblog startup [in /home/tommyvandezande/projects/microblog/app/__init__.py:47]
+2020-06-06 14:34:59,835 ERROR: Exception on /edit_profile [POST] [in /home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/app.py:1892]
+Traceback (most recent call last):
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1284, in _execute_context
+    cursor, statement, parameters, context
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/engine/default.py", line 590, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.IntegrityError: UNIQUE constraint failed: user.username
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask_login/utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "/home/tommyvandezande/projects/microblog/app/routes.py", line 90, in edit_profile
+    db.session.commit()
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/orm/scoping.py", line 163, in do
+    return getattr(self.registry(), name)(*args, **kwargs)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/orm/session.py", line 1042, in commit
+    self.transaction.commit()
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/orm/session.py", line 504, in commit
+    self._prepare_impl()
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/orm/session.py", line 483, in _prepare_impl
+    self.session.flush()
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/orm/session.py", line 2523, in flush
+    self._flush(objects)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/orm/session.py", line 2664, in _flush
+    transaction.rollback(_capture_exception=True)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/util/langhelpers.py", line 69, in __exit__
+    exc_value, with_traceback=exc_tb,
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/util/compat.py", line 178, in raise_
+    raise exception
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/orm/session.py", line 2624, in _flush
+    flush_context.execute()
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/orm/unitofwork.py", line 422, in execute
+    rec.execute(self)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/orm/unitofwork.py", line 589, in execute
+    uow,
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/orm/persistence.py", line 236, in save_obj
+    update,
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/orm/persistence.py", line 995, in _emit_update_statements
+    statement, multiparams
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1020, in execute
+    return meth(self, multiparams, params)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/sql/elements.py", line 298, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1139, in _execute_clauseelement
+    distilled_params,
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1324, in _execute_context
+    e, statement, parameters, cursor, context
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1518, in _handle_dbapi_exception
+    sqlalchemy_exception, with_traceback=exc_info[2], from_=e
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/util/compat.py", line 178, in raise_
+    raise exception
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1284, in _execute_context
+    cursor, statement, parameters, context
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/sqlalchemy/engine/default.py", line 590, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) UNIQUE constraint failed: user.username
+[SQL: UPDATE user SET username=?, about_me=? WHERE user.id = ?]
+[parameters: ('susan', "I'm learning how to build a microblog using Python and Flask. ", 2)]
+(Background on this error at: http://sqlalche.me/e/gkpj)
+2020-06-06 14:45:54,085 INFO: Microblog startup [in /home/tommyvandezande/projects/microblog/app/__init__.py:47]
+2020-06-06 15:00:39,761 INFO: Microblog startup [in /home/tommyvandezande/projects/microblog/app/__init__.py:47]
+2020-06-06 15:00:50,630 INFO: Microblog startup [in /home/tommyvandezande/projects/microblog/app/__init__.py:47]
+2020-06-06 15:36:20,278 INFO: Microblog startup [in /home/tommyvandezande/projects/microblog/app/__init__.py:47]
+2020-06-06 16:00:52,982 INFO: Microblog startup [in /home/tommyvandezande/projects/microblog/app/__init__.py:47]
+2020-06-06 16:00:57,904 INFO: Microblog startup [in /home/tommyvandezande/projects/microblog/app/__init__.py:47]
+2020-06-06 16:01:15,361 ERROR: Exception on /user/susan [GET] [in /home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/app.py:1892]
+Traceback (most recent call last):
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask_login/utils.py", line 272, in decorated_view
+    return func(*args, **kwargs)
+  File "/home/tommyvandezande/projects/microblog/app/routes.py", line 81, in user
+    return render_template('user.html', user=user, posts=posts, form=form)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/templating.py", line 140, in render_template
+    ctx.app,
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/jinja2/environment.py", line 1090, in render
+    self.environment.handle_exception()
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/jinja2/environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "/home/tommyvandezande/projects/microblog/env/lib/python3.7/site-packages/jinja2/_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "/home/tommyvandezande/projects/microblog/app/templates/user.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/tommyvandezande/projects/microblog/app/templates/base.html", line 30, in top-level template code
+    {% block content %}{% endblock %}
+  File "/home/tommyvandezande/projects/microblog/app/templates/user.html", line 22, in block "content"
+    {{ form.submit(value='Follow') }}
+jinja2.exceptions.UndefinedError: 'app.forms.EmptyForm object' has no attribute 'submit'

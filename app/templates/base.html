@@ -3,13 +3,14 @@
 {% block scripts %}
     {{ super() }}
     {{ moment.include_moment() }}
+    {{ moment.lang(g.locale) }}
 {% endblock %}
 
 {% block title %}
       {% if title %}
-      <title>{{ title }} - Microblog</title>
+      {{ title }} - Microblog
       {% else %}
-      <title>{{ _('Welcome to Microblog') }}</title>
+      {{ _('Welcome to Microblog') }}
       {% endif %}
 {% endblock %}
 

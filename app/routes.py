@@ -1,6 +1,6 @@
-from flask import render_template, flash, redirect, request
+from flask import render_template, flash, redirect, request, g
 from flask.helpers import url_for
-from flask_babel import _, lazy_gettext as _l
+from flask_babel import get_locale, _, lazy_gettext as _l
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm
 from app.models import User, Post
@@ -14,6 +14,7 @@ def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
+    g.locale = str(get_locale())
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])

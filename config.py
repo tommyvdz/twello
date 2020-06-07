@@ -4,7 +4,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
 
-    # Set a secret key as environment variable to prevent CSRF
+    # Set a secret key as environment variable to protect forms & encode JWT tokens
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
 
     # If no database is provided as environment variable, I will use a sqlite db called 'app.db'
@@ -12,7 +12,7 @@ class Config(object):
         'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # If you configure the following environment variables, I will send error messages by email
+    # Mail configuration - for capabilities such as error logging & reset pass capability
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
@@ -22,3 +22,6 @@ class Config(object):
 
     # Interface
     POSTS_PER_PAGE = 25
+
+    # Translations
+    LANGUAGES = ['en', 'nl']

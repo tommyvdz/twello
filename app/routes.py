@@ -1,13 +1,15 @@
-from flask import render_template, flash, redirect, request, g
+from flask import render_template, flash, redirect, request, g, jsonify
 from flask.helpers import url_for
 from flask_babel import get_locale, _, lazy_gettext as _l
 from app import app, db
+from app.translate import translate
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm
 from app.models import User, Post
 from app.email import send_password_reset_email
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from datetime import datetime
+from guess_language import guess_language
 
 @app.before_request
 def before_request():
@@ -22,7 +24,11 @@ def before_request():
 def index():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(body=form.post.data, author=current_user)
+        language = guess_language(form.post.data) # guess the language of the post, if unknown or unexpected long it is treated as unknown
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''
+        post = Post(body=form.post.data, author=current_user,
+                    language=language)
         db.session.add(post)
         db.session.commit()
         flash(_('Your post has been published'))
@@ -30,7 +36,8 @@ def index():
     
     page = request.args.get('page', 1, type=int)
 
-    #paginate object returns .items with the content for a page, but also properties such as has_next, has_prev and next_num and prev_num 
+    # paginate object returns .items with the content for a page, 
+    # but also properties such as has_next, has_prev and next_num and prev_num 
     posts = current_user.followed_posts().paginate(page, app.config['POSTS_PER_PAGE'], False)
     next_url = url_for('index', page=posts.next_num) if posts.has_next else None
     prev_url = url_for('index', page=posts.prev_num) if posts.has_prev else None
@@ -181,3 +188,12 @@ def reset_password(token):
         flash(_('Password succesfully reset.'))
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
+
+@app.route('/translate', methods=['POST'])
+@login_required
+def translate_text():
+    print(request.form['text']+','+request.form['source_language']+','+request.form['dest_language'])
+    return jsonify({'text': translate(request.form['text'],
+                                      request.form['source_language'],
+                                      request.form['dest_language'])})
+    

@@ -25,3 +25,6 @@ class Config(object):
 
     # Translations
     LANGUAGES = ['en', 'nl']
+
+    # MS Azure Translation service
+    MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')

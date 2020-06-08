@@ -14,19 +14,19 @@
             
             <!-- check if the user is the current logged in user, then display edit profile -->
             {% if user == current_user %}
-            <p><a href="{{ url_for('edit_profile') }}">{{ _('Edit your profile') }}</a></p>
+            <p><a href="{{ url_for('main.edit_profile') }}">{{ _('Edit your profile') }}</a></p>
             
             <!-- if its not the current user, then check if the current user is already following the user to display the follow or unfollow button-->
             {% elif not current_user.is_following(user) %}
             <p>
-                <form action="{{ url_for('follow', username=user.username) }}" method="POST">
+                <form action="{{ url_for('main.follow', username=user.username) }}" method="POST">
                     {{ form.hidden_tag() }}
                     {{ form.submit(value='Follow', class_='btn btn-default') }}
                 </form>
             </p>
             {% else %}
             <p>
-                <form action="{{ url_for('unfollow', username=user.username) }}" method="POST">
+                <form action="{{ url_for('main.unfollow', username=user.username) }}" method="POST">
                     {{ form.hidden_tag() }}
                     {{ form.submit(value='Unfollow', class_='btn btn-default') }}
                 </form>

@@ -18,11 +18,12 @@ def supportedLanguage(source, dest):
     return False
 
 def translate(text, source_language, dest_language):
-     if 'MS_TRANSLATOR_KEY' not in current_app.config or not current_app.config['MS_TRANSLATOR_KEY']:
+    
+    if 'MS_TRANSLATOR_KEY' not in current_app.config or not current_app.config['MS_TRANSLATOR_KEY']:
         return _('Error: the translation service is not configured')
+    
     if not supportedLanguage(source_language, dest_language):
         return _('The translation service does not support this language')
-    
     base_url = 'https://api-eur.cognitive.microsofttranslator.com'
     path = '/translate?api-version=3.0'
     params = '&from=' + source_language + '&to=' + dest_language

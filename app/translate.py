@@ -5,9 +5,23 @@ import uuid
 from flask_babel import _
 from app import app
 
+# not all languages are supported, and the translation api simply returns "bad request".
+# This function enables a more meaningful answer
+def supportedLanguage(source, dest):
+    url = 'https://api-eur.cognitive.microsofttranslator.com/languages?api-version=3.0&scope=translation'
+    headers = {
+        'X-ClientTraceId': str(uuid.uuid4())
+    }
+    response = requests.get(url).json()['translation']
+    if source in response and dest in response:
+        return True
+    return False
+
 def translate(text, source_language, dest_language):
     if 'MS_TRANSLATOR_KEY' not in app.config or not app.config['MS_TRANSLATOR_KEY']:
         return _('Error: the translation service is not configured')
+    if not supportedLanguage(source_language, dest_language):
+        return _('The translation service does not support this language')
     
     base_url = 'https://api-eur.cognitive.microsofttranslator.com'
     path = '/translate?api-version=3.0'
@@ -25,7 +39,7 @@ def translate(text, source_language, dest_language):
         'text' : text
     }]
     response = requests.post(constructed_url, headers=headers, json=body)
-    print(response.status_code)
+    
     if response.status_code != 200:
         return _('Error: the translation service failed.')
     return response.json()[0]['translations'][0]['text']

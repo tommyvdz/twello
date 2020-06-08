@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-07 19:01+0000\n"
+"POT-Creation-Date: 2020-06-08 12:20+0000\n"
 "PO-Revision-Date: 2020-06-07 16:12+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: nl\n"
@@ -38,7 +38,7 @@ msgstr "Wachtwoord"
 msgid "Remember Me"
 msgstr "Onthoud mij"
 
-#: app/forms.py:11 app/routes.py:66 app/templates/login.html:5
+#: app/forms.py:11 app/routes.py:73 app/templates/login.html:5
 msgid "Sign In"
 msgstr "Inloggen"
 
@@ -50,7 +50,7 @@ msgstr "E-mail"
 msgid "Repeat Password"
 msgstr "Herhaal wachtwoord"
 
-#: app/forms.py:20 app/routes.py:87 app/templates/register.html:5
+#: app/forms.py:20 app/routes.py:94 app/templates/register.html:5
 msgid "Register"
 msgstr "Registreren"
 
@@ -78,67 +78,77 @@ msgstr "Zeg iets"
 msgid "Request Password Reset"
 msgstr "Stel je wachtwoord opnieuw in"
 
-#: app/forms.py:63 app/routes.py:168
+#: app/forms.py:63 app/routes.py:175
 #: app/templates/reset_password_request.html:5
 msgid "Reset Password"
 msgstr "Wachtwoord opnieuw instellen"
 
-#: app/routes.py:28
+#: app/routes.py:34
 msgid "Your post has been published"
 msgstr "Je bericht is geplaatst"
 
-#: app/routes.py:38 app/templates/base.html:31
+#: app/routes.py:45 app/templates/base.html:47
 msgid "Home"
 msgstr "Thuis"
 
-#: app/routes.py:47 app/templates/base.html:32
+#: app/routes.py:54 app/templates/base.html:48
 msgid "Explore"
 msgstr "Verken"
 
-#: app/routes.py:59
+#: app/routes.py:66
 msgid "Invalid username or password"
 msgstr "Ongeldige gebruiksernaam of wachtwoord"
 
-#: app/routes.py:85
+#: app/routes.py:92
 msgid "Congratulations, you are now a registered user!"
 msgstr "Gefeliciteerd, je bent nu een geregistreerde gebruiker"
 
-#: app/routes.py:117 app/templates/edit_profile.html:5
+#: app/routes.py:124 app/templates/edit_profile.html:5
 msgid "Edit Profile"
 msgstr "Bewerk je profiel"
 
-#: app/routes.py:126 app/routes.py:145
+#: app/routes.py:133 app/routes.py:152
 #, python-format
 msgid "User %(username)s not found."
 msgstr "Gebruiker %(username)s is niet gevonden"
 
-#: app/routes.py:129
+#: app/routes.py:136
 msgid "You cannot follow yourself"
 msgstr "Je kan jezelf niet volgen"
 
-#: app/routes.py:133
+#: app/routes.py:140
 #, python-format
 msgid "You are now following %(username)s!"
 msgstr "Je volgt %(username)s nu"
 
-#: app/routes.py:148
+#: app/routes.py:155
 msgid "You cannot unfollow yourself!"
 msgstr "Je kan jezelf niet ontvolgen"
 
-#: app/routes.py:152
+#: app/routes.py:159
 #, python-format
 msgid "No longer following %(username)s."
-msgstr "Je volt %(username)s niet langer"
+msgstr "Je volgt %(username)s niet langer"
 
-#: app/routes.py:166
+#: app/routes.py:173
 msgid "Check your email for instructions to reset your password"
-msgstr ""
-"Controleer je email voor instructies om je wachtwoord opnieuw in te "
-"stellen"
+msgstr "Controleer je email voor instructies om je wachtwoord opnieuw in te stellen"
 
-#: app/routes.py:181
+#: app/routes.py:188
 msgid "Password succesfully reset."
 msgstr "Je wachtwoord is opnieuw ingesteld."
+
+#: app/translate.py:22
+msgid "Error: the translation service is not configured"
+msgstr "Fout: the vertaaldienst is niet ingesteld"
+
+#: app/translate.py:24
+msgid "The translation service does not support this language"
+msgstr "De vertaaldienst ondersteunt deze taal niet"
+
+#: app/translate.py:44
+msgid "Error: the translation service failed."
+msgstr "Fout: de vertaaldienst reageert niet"
 
 #: app/templates/404.html:4
 msgid "File Not Found"
@@ -161,23 +171,31 @@ msgstr "De beheerder is op de hoogte gebracht. Sorry voor het ongemak!"
 msgid "%(username)s said %(when)s"
 msgstr "%(when)s zei %(username)s"
 
-#: app/templates/base.html:13
+#: app/templates/_post.html:25
+msgid "Translate"
+msgstr "Vertaal"
+
+#: app/templates/base.html:18
+msgid "Error: Could not contact server."
+msgstr "Fout: geen verbinding met de server"
+
+#: app/templates/base.html:29
 msgid "Welcome to Microblog"
 msgstr "Welkom op Microblog"
 
-#: app/templates/base.html:22
+#: app/templates/base.html:38
 msgid "Toggle navigation"
 msgstr "Klap navigatie open"
 
-#: app/templates/base.html:36
+#: app/templates/base.html:52
 msgid "Login"
 msgstr "Inloggen"
 
-#: app/templates/base.html:38
+#: app/templates/base.html:54
 msgid "Profile"
 msgstr "Profiel"
 
-#: app/templates/base.html:39
+#: app/templates/base.html:55
 msgid "Logout"
 msgstr "Uitloggen"
 
@@ -227,9 +245,4 @@ msgstr "%(followers)s volgers, jij volgt %(following)s gebruikers"
 #: app/templates/user.html:17
 msgid "Edit your profile"
 msgstr "Bewerk je profiel"
-
-#~ msgid "Check your email for instrutions to reset your password"
-#~ msgstr ""
-#~ "Controleer je e-mail voor instructies om"
-#~ " je wachtwoord opnieuw in te stellen"
 

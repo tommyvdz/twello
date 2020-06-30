@@ -14,8 +14,18 @@
             
             <!-- check if the user is the current logged in user, then display edit profile -->
             {% if user == current_user %}
-            <p><a href="{{ url_for('main.edit_profile') }}">{{ _('Edit your profile') }}</a></p>
-            
+            <p>
+                <a href="{{ url_for('main.edit_profile') }}">
+                    {{ _('Edit your profile') }}
+                </a>
+            </p>
+            {% if not current_user.get_task_in_progress('export_posts') %}
+            <p>
+                <a href="{{ url_for('main.export_posts') }}">
+                    {{ _('Export your posts') }}
+                </a>
+            </p>
+            {% endif %}
             <!-- if its not the current user, then check if the current user is already following the user to display the follow or unfollow button-->
             {% elif not current_user.is_following(user) %}
             <p>
@@ -30,6 +40,15 @@
                     {{ form.hidden_tag() }}
                     {{ form.submit(value='Unfollow', class_='btn btn-default') }}
                 </form>
+            </p>
+            {% endif %}
+
+            {% if user != current_user %}
+            <p>
+                <a href="{{ url_for('main.send_message',
+                                    recipient=user.username) }}">
+                    {{ _('Send private message') }}
+                </a>
             </p>
             {% endif %}
         </td>

@@ -18,6 +18,40 @@ followers = db.Table('followers',
             db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
 )
 
+boardusers = db.Table('boardusers', 
+            db.Column('board_id', db.Integer, db.ForeignKey('board.id')),
+            db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
+)
+
+class Board(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id')) #owns the board
+    state = db.Column(db.String(128))
+    color = db.Column(db.String(128))
+    lists = db.relationship('List', backref='board', lazy='dynamic', order_by="List.position")
+    members = db.relationship('User', secondary=boardusers, 
+                                    backref='board')
+                                
+class List(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    board_id = db.Column(db.Integer, db.ForeignKey('board.id'))
+    cards = db.relationship('Card', backref='list', lazy='dynamic', order_by="Card.position")
+    state = db.Column(db.String(128))
+    position = db.Column(db.Integer)
+
+class Card(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    list_id = db.Column(db.Integer, db.ForeignKey('list.id'))
+    state = db.Column(db.String(128))
+    position = db.Column(db.Integer)
+    #members (assignees)
+    
+
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True)
@@ -90,6 +124,10 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
+    created_boards = db.relationship('Board', backref='creator', lazy='dynamic')
+    lists =  db.relationship('List', backref='creator', lazy='dynamic')
+    cards = db.relationship('Card', backref='creator', lazy='dynamic')
+    boards = db.relationship('Board', secondary=boardusers, backref='member', lazy='dynamic')
 
     # set up the self-referential many to many relationship
     followed = db.relationship(

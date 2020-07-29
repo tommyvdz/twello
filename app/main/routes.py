@@ -4,12 +4,13 @@ from flask_babel import get_locale, _, lazy_gettext as _l
 from app import db
 from app.main import bp
 from app.translate import translate
-from app.main.forms import EditProfileForm, EmptyForm, PostForm, SearchForm, MessageForm
-from app.models import User, Post, Message, Notification
+from app.main.forms import EditProfileForm, EmptyForm, PostForm, SearchForm, MessageForm, BoardForm, ListForm, CardForm
+from app.models import User, Post, Message, Notification, Board, List, Card
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from datetime import datetime
 from guess_language import guess_language
+from sqlalchemy import func
 
 @bp.before_request
 def before_request():
@@ -54,6 +55,87 @@ def explore():
     prev_url = url_for('main.explore', page=posts.prev_num) if posts.has_prev else None
     return render_template('index.html', title=_('Explore'), posts=posts.items, next_url=next_url, prev_url=prev_url)
 
+@bp.route('/boards', methods=['GET', 'POST'])
+@login_required
+def boards():
+    currentboards = current_user.created_boards
+    form = BoardForm()
+    if form.validate_on_submit():
+        board = Board(name=form.name.data, creator=current_user)
+        db.session.add(board)
+        db.session.commit()
+        flash(_('Your board has been created'))
+        return redirect(url_for('main.boards'))
+
+    return render_template('boards.html', boards=currentboards, form=form )
+
+@bp.route('/board/<boardid>', methods=['GET', 'POST'])
+@login_required
+def board(boardid):
+    board = Board.query.filter_by(id=boardid).first_or_404()
+    listform = ListForm()
+    cardform = CardForm()
+    if listform.validate_on_submit() and listform.create.data:
+        mpos = db.session.query(func.max(List.position)).scalar() #determine highest position number to increment the position
+        list = List(name=listform.name.data, creator=current_user, board_id=board.id, position=mpos+1)
+        db.session.add(list)
+        db.session.commit()
+        flash(_('Your list has been created'))
+        return redirect(url_for('main.board', boardid=boardid))
+    elif cardform.validate_on_submit() and cardform.add.data:
+        mpos = db.session.query(func.max(Card.position)).scalar()
+        card = Card(name=cardform.name.data, creator=current_user, position=mpos+1, list_id=List.query.filter_by(id=cardform.listid.data).first_or_404().id)
+        db.session.add(card)
+        db.session.commit()
+        flash(_('Your card has been added'))
+        return redirect(url_for('main.board', boardid=boardid))
+    return render_template('board.html', board=board, listform=listform, cardform=cardform)
+
+@bp.route('/updatecard', methods=['POST'])
+@login_required
+def updatecard():
+    card = Card.query.filter_by(id=request.form['id']).first_or_404()
+    card.list_id = request.form['targetlist']
+    card.position = request.form['position']
+    db.session.commit()
+    resp = jsonify(success=True)
+    return resp
+
+@bp.route('/updatelist', methods=['POST'])
+@login_required
+def updatelist():
+    list = List.query.filter_by(id=request.form['id']).first_or_404()
+    list.position = request.form['position']
+    db.session.commit()
+    resp = jsonify(success=True)
+    return resp
+
+@bp.route('/deletelist', methods=['POST'])
+@login_required
+def deletelist():
+    list = List.query.filter_by(id=request.form['id']).first_or_404()
+    db.session.delete(list)
+    db.session.commit()
+    resp = jsonify(success=True)
+    return resp
+
+@bp.route('/deletecard', methods=['POST'])
+@login_required
+def deletecard():
+    card = Card.query.filter_by(id=request.form['id']).first_or_404()
+    db.session.delete(card)
+    db.session.commit()
+    resp = jsonify(success=True)
+    return resp
+
+@bp.route('/deleteboard', methods=['POST'])
+@login_required
+def deleteboard():
+    board = Board.query.filter_by(id=request.form['id']).first_or_404()
+    db.session.delete(board)
+    db.session.commit()
+    resp = jsonify(success=True)
+    return resp
 
 @bp.route('/user/<username>')
 @login_required

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_babel import _, lazy_gettext as _l
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, StringField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, StringField, TextAreaField, HiddenField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from app.models import User
 from flask import request
@@ -43,3 +43,16 @@ class MessageForm(FlaskForm):
     message = TextAreaField(_l('Message'), validators=[
         DataRequired(), Length(min=0, max=140)])
     submit = SubmitField(_l('Submit'))
+
+class BoardForm(FlaskForm):
+    name = StringField(_l('Board name'), validators=[DataRequired()])
+    submit = SubmitField(_l('Create'))
+
+class ListForm(FlaskForm):
+    name = StringField(_l('List name'), validators=[DataRequired()])
+    create = SubmitField(_l('Create'))
+
+class CardForm(FlaskForm):
+    name = StringField(_l('Card name'), validators=[DataRequired()])
+    listid = HiddenField('List name', validators=[DataRequired()])
+    add = SubmitField(_l('Add'))

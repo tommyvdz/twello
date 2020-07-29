@@ -5,6 +5,10 @@
     {{ moment.include_moment() }}
     {{ moment.lang(g.locale) }}
 
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js" ></script>
+
+
     <script>
         function translate(sourceElem, destElem, sourceLang, destLang) {
             $(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
@@ -120,6 +124,7 @@
               <ul class="nav navbar-nav">
                   <li><a href="{{ url_for('main.index') }}">{{ _('Home') }}</a></li>
                   <li><a href="{{ url_for('main.explore') }}">{{ _('Explore') }}</a></li>
+                  <li><a href="{{ url_for('main.boards') }}">{{_('Boards') }}</a></li>
               </ul>
                 {% if g.search_form %}
                 <form class="navbar-form navbar-left" method="get"

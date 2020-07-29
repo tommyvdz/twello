@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+<div class="row">
+  <h1>{{ board.name }}<button type="button" class="close" aria-label="Close" onclick="deleteBoard({{ board.id }})"><span aria-hidden="true">&times;</span></button></h1>
+  
+</div>
+
+
+  <div class="row row-no-gutters lists" style="display: flex;
+    display: -webkit-flex;
+    flex-wrap: wrap;">
+    {% for list in board.lists %}
+    <div id="listc{{ list.id }}" class="col-md-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            {{ list.name }}
+            <button type="button" class="close" aria-label="Close" onclick="deleteList({{ list.id }})"><span aria-hidden="true">&times;</span></button>
+          </h3>
+        </div>
+
+        <ul id="list{{ list.id }}" class="list-group">
+          {% for card in list.cards %}
+          <li class="list-group-item" id='crd{{ card.id }}'>{{ card.name }}
+          <button type="button" class="close" aria-label="Close" onclick="deleteCard({{ card.id }})"><span aria-hidden="true">&times;</span></button></li>
+          {% endfor %}
+        </ul>
+        <div class="panel-footer">
+            <form action="" method="post" class="form" role="form">
+              {{ cardform.csrf_token() }}
+              {{ wtf.form_field(cardform.name, class='form-control', placeholder='New Card..') }}
+              {{ cardform.listid(value=list.id)}}
+              {{ wtf.form_field(cardform.add, class='form-control')}}
+            </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}    
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+        {{ wtf.quick_form(listform) }}
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+  { 
+
+    function deleteCard(cardid){
+      var element = document.getElementById('crd'+cardid);
+      element.parentNode.removeChild(element);
+      $.post("/deletecard",
+      {
+        id: cardid
+      });
+    }
+    
+    function deleteList(listid){
+      if (confirm("Are you sure? All cards will be deleted")){
+        var element = document.getElementById('listc'+listid);
+        element.parentNode.removeChild(element);
+        $.post("/deletelist",
+        {
+          id: listid
+        });
+      }
+    }  
+    
+    function deleteBoard(boardid){
+      if (confirm("Are you sure? All lists will be deleted")){
+        $.post("/deleteboard",
+        {
+          id: boardid
+        });
+        window.location.href = '/boards';
+      }
+    }    
+
+    $('.lists').sortable({
+        group: 'list',
+        animation: 100,
+        onEnd({ item, to, from, newIndex, oldIndex }) {
+          $.post("/updatelist",
+          {
+            id: item.id.substring(5),
+            position: newIndex
+          }
+          );
+        },
+    });
+  
+  
+    $('.list-group').each(function() {
+      $('#'+this.id).sortable({
+        group: 'lists',
+        animation: 100,
+        onEnd({ item, to, from, newIndex, oldIndex }) {
+          $.post("/updatecard",
+          {
+            id: item.id.substring(3),
+            targetlist: to.id.substring(4),
+            position: newIndex
+          }
+          );
+        },
+      });
+    });
+    
+  }
+</script>
+
+{% endblock %}
